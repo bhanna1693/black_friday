@@ -1,0 +1,22 @@
+<h1>All Users</h1>
+
+<table class="table">
+  <tr>
+    <th>User Email</th>
+    <th>User Role</th>
+  </tr>
+  
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.email %></td>
+      <td><%= user.role %></td>
+      <td>
+        <% if user.role == "guest" %>
+          <%= link_to "Upgrade to Admin", upgrade_user_path(id: user.id), method: :put, class: "btn btn-success" %>
+        <% elsif user.role == "admin" && user.id != current_user.id %>
+          <%= link_to "Revoke admin privileges", downgrade_user_path(id: user.id), method: :put, data: { confirm: 'Are you sure you want to downgrade this user?' }, class: "btn btn-danger" %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

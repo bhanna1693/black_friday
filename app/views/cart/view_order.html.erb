@@ -1,0 +1,22 @@
+<h1>My Cart</h1>
+
+<table class="table">
+  <% @line_items.each do |line_item| %>
+    <tr>
+      <td><%= line_item.product.name %></td>
+      <td><%= number_to_currency line_item.product.price %></td>
+      <td>Qty: <%= line_item.quantity %></td>
+      <td>Subtotal: <%= number_to_currency line_item.line_item_total %></td>
+
+      <%= form_tag edit_line_item_path do %>
+        <%= hidden_field_tag :id, line_item.id %>
+        <td><%= number_field_tag :quantity, line_item.quantity, placeholder: "How many?" %>
+        <%= submit_tag "Edit Quantity", class: "btn btn-small btn-warning" %></td>
+      <% end %>
+
+      <td><%= link_to 'remove', remove_from_cart_path(id: line_item.id), method: :put, class: "btn btn-danger" %></td>
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to "Proceed to Checkout?", checkout_path, class: "btn btn-small btn-success" %>
